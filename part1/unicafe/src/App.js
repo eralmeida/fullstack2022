@@ -1,5 +1,36 @@
 import { useState } from 'react';
 
+const Stats = ({ neutral, bad, good, sum, average, positive }) => {
+  if ((neutral === 0) & (bad === 0) & (good === 0)) {
+    return (
+      <div>
+        <p>
+          <b>No feedback given</b>
+        </p>
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        <StatisticsLine text="Good" value={good}></StatisticsLine>
+        <StatisticsLine text="Neutral" value={neutral}></StatisticsLine>
+        <StatisticsLine text="Bad" value={bad}></StatisticsLine>
+        <StatisticsLine text="All" value={sum}></StatisticsLine>
+        <StatisticsLine text="Average" value={average}></StatisticsLine>
+        <StatisticsLine text="Positive" value={positive}></StatisticsLine>
+      </div>
+    );
+  }
+};
+
+const StatisticsLine = ({ text, value }) => {
+  return (
+    <p>
+      {text} {value}
+    </p>
+  );
+};
+
 const App = () => {
   // save clicks of each button to its own state
 
@@ -14,8 +45,23 @@ const App = () => {
   const handleNeutralClick = () => {
     setNeutral(neutral + 1);
   };
+
   const handleBadClick = () => {
     setBad(bad + 1);
+  };
+
+  const getSum = () => {
+    return good + neutral + bad;
+  };
+
+  const getAverage = () => {
+    let average = (good - bad) / (good + neutral + bad);
+    return Number.isNaN(average) ? 0 : average;
+  };
+
+  const getPositivePercentage = () => {
+    let result = (good / (good + neutral + bad)) * 100;
+    return Number.isNaN(result) ? 0 : result;
   };
 
   return (
@@ -24,24 +70,14 @@ const App = () => {
       <Button handleClick={handleGoodClick} text={'good'}></Button>
       <Button handleClick={handleNeutralClick} text={'neutral'}></Button>
       <Button handleClick={handleBadClick} text={'bad'}></Button>
-      <Stats good={good} neutral={neutral} bad={bad}></Stats>
+      <h1>Statistics</h1>
+      <Stats good={good} neutral={neutral} bad={bad} sum={getSum()} average={getAverage()} positive={getPositivePercentage()}></Stats>
     </div>
   );
 };
 
 const Header = () => {
   return <h1>give feedback</h1>;
-};
-
-const Stats = ({ neutral, bad, good }) => {
-  return (
-    <div>
-      <h1>Statistics</h1>
-      <p>Good {good}</p>
-      <p>Neutral {neutral}</p>
-      <p>Bad {bad}</p>
-    </div>
-  );
 };
 
 const Button = ({ handleClick, text }) => {

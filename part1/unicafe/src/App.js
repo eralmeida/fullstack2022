@@ -12,12 +12,16 @@ const Stats = ({ neutral, bad, good, sum, average, positive }) => {
   } else {
     return (
       <div>
-        <StatisticsLine text="Good" value={good}></StatisticsLine>
-        <StatisticsLine text="Neutral" value={neutral}></StatisticsLine>
-        <StatisticsLine text="Bad" value={bad}></StatisticsLine>
-        <StatisticsLine text="All" value={sum}></StatisticsLine>
-        <StatisticsLine text="Average" value={average}></StatisticsLine>
-        <StatisticsLine text="Positive" value={positive}></StatisticsLine>
+        <table>
+          <tbody>
+            <StatisticsLine text="Good" value={good}></StatisticsLine>
+            <StatisticsLine text="Neutral" value={neutral}></StatisticsLine>
+            <StatisticsLine text="Bad" value={bad}></StatisticsLine>
+            <StatisticsLine text="All" value={sum}></StatisticsLine>
+            <StatisticsLine text="Average" value={average}></StatisticsLine>
+            <StatisticsLine text="Positive" value={positive}></StatisticsLine>
+          </tbody>
+        </table>
       </div>
     );
   }
@@ -25,9 +29,10 @@ const Stats = ({ neutral, bad, good, sum, average, positive }) => {
 
 const StatisticsLine = ({ text, value }) => {
   return (
-    <p>
-      {text} {value}
-    </p>
+    <tr>
+      <td>{text}</td>
+      <td>{value}</td>
+    </tr>
   );
 };
 

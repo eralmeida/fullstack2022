@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Persons = ({ personsToShow }) => {
+const Persons = ({ personsToShow, deleteHandler }) => {
   return (
     <ul>
       {personsToShow.map((person) => (
-        <li key={person.name} style={{ listStyleType: 'none' }}>
-          {person.name} {person.number}
+        <li key={person.id} style={{ listStyleType: 'none' }}>
+          {person.name} {person.number} <button onClick={() => deleteHandler(person)}>delete</button>
         </li>
       ))}
     </ul>

@@ -9,6 +9,8 @@ const App = () => {
   const [newName, setNewName] = useState('new name');
   const [newNumber, setNewNumber] = useState('00 - 00 - 000000');
   const [nameToSearch, setNameToSearch] = useState('');
+  const [addedNameMessage, setAddedNameMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
@@ -16,34 +18,52 @@ const App = () => {
     });
   }, []);
 
+  const Notification = ({ message }) => {
+    if (message === null) {
+      return null;
+    }
+    return <div className="addedNameMessage">{message}</div>;
+  };
+
+  const ErrorMessage = ({ message }) => {
+    if (message === null) {
+      return null;
+    }
+    return <div className="errorMessage">{message}</div>;
+  };
+
   const addPerson = (event) => {
     event.preventDefault();
 
     if (persons.some((p) => p.name === newName)) {
-      // alert(`${newName} is already added to phonebook`);
-      // return;
-
       if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
         const person = persons.find((p) => p.name === newName);
         const changedPerson = { ...person, number: newNumber };
-        personService.update(changedPerson.id, changedPerson).then((updatedPerson) => {
-          setPersons(persons.map((person) => (person.id !== changedPerson.id ? person : updatedPerson)));
-        });
-
+        personService
+          .update(changedPerson.id, changedPerson)
+          .then((updatedPerson) => {
+            setPersons(persons.map((person) => (person.id !== changedPerson.id ? person : updatedPerson)));
+            setAddedNameMessage(`${changedPerson.name}'s number has changed to ${updatedPerson.number}`);
+          })
+          .catch(() => {
+            setErrorMessage(`Information of ${changedPerson.name} has already been removed from server`);
+          });
+      } else {
         return;
       }
+    } else {
+      const personObject = {
+        name: newName,
+        number: newNumber,
+      };
+
+      personService.create(personObject).then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson));
+        setAddedNameMessage(`Added ${personObject.name}`);
+        setNewName('');
+        setNewNumber('');
+      });
     }
-
-    const personObject = {
-      name: newName,
-      number: newNumber,
-    };
-
-    personService.create(personObject).then((returnedPerson) => {
-      setPersons(persons.concat(returnedPerson));
-      setNewName('');
-      setNewNumber('');
-    });
   };
 
   const handleNameChange = (event) => {
@@ -70,7 +90,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-
+      <Notification message={addedNameMessage}></Notification>
+      <ErrorMessage message={errorMessage}></ErrorMessage>
       <Filter searchTerm={nameToSearch} handler={handleNameSearch}></Filter>
 
       <h4>Add new Person</h4>

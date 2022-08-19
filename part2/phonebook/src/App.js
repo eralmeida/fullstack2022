@@ -44,9 +44,11 @@ const App = () => {
           .then((updatedPerson) => {
             setPersons(persons.map((person) => (person.id !== changedPerson.id ? person : updatedPerson)));
             setAddedNameMessage(`${changedPerson.name}'s number has changed to ${updatedPerson.number}`);
+            setErrorMessage(null);
           })
-          .catch(() => {
-            setErrorMessage(`Information of ${changedPerson.name} has already been removed from server`);
+          .catch((error) => {
+            setErrorMessage(`${error.response.data.error}`);
+            setAddedNameMessage(null);
           });
       } else {
         return;
@@ -57,12 +59,19 @@ const App = () => {
         number: newNumber,
       };
 
-      personService.create(personObject).then((returnedPerson) => {
-        setPersons(persons.concat(returnedPerson));
-        setAddedNameMessage(`Added ${personObject.name}`);
-        setNewName('');
-        setNewNumber('');
-      });
+      personService
+        .create(personObject)
+        .then((returnedPerson) => {
+          setPersons(persons.concat(returnedPerson));
+          setAddedNameMessage(`Added ${personObject.name}`);
+          setNewName('');
+          setNewNumber('');
+          setErrorMessage(null);
+        })
+        .catch((error) => {
+          setErrorMessage(`${error.response.data.error}`);
+          setAddedNameMessage(null);
+        });
     }
   };
 

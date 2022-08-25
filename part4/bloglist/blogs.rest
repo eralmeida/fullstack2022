@@ -1,0 +1,9 @@
+POST http://localhost:3001/api/blogs/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "title": "O titulo",
+    "author": "Eduardo Almeida",
+    "url": "http://coiso.com",
+    "likes": 0
+}

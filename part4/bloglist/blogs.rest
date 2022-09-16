@@ -1,17 +1,19 @@
 POST http://localhost:3001/api/blogs/ HTTP/1.1
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRhbGllc2luIiwiaWQiOiI2MzJiNTdkNWRhMGRiMGZiYmU5MjE4ZjAiLCJpYXQiOjE2NjQyNzA5NzMsImV4cCI6MTY2NDI3NDU3M30.5oxK6sJgspFGy16AmNm44CaMMUrLhvZrEeax-N7SDWM
 
 {
-    "title": "O titulo",
+    "title": "O outro titulo",
     "author": "Eduardo Almeida",
-    "url": "http://coiso.com",
+    "url": "novourl",
     "likes": 0
 }
 
 ###
 
-DELETE http://localhost:3001/api/blogs/6311ef28ba660a3fc02bc8f6 HTTP/1.1
+DELETE http://localhost:3001/api/blogs/6329feb05ca53e6dff623867 HTTP/1.1
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRhbGllc2luIiwiaWQiOiI2MzJiNTdkNWRhMGRiMGZiYmU5MjE4ZjAiLCJpYXQiOjE2NjQyNzE3MjcsImV4cCI6MTY2NDI3NTMyN30.yrSmq08cQjnq3DRZQt8wHo_S7FLBi6W7sSWF8BCydV8
 
 ###
 

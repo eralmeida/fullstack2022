@@ -9,7 +9,8 @@ module.exports = {
   extends: ['eslint:recommended', 'plugin:react/recommended'],
   overrides: [],
   parserOptions: {
-    ecmaVersion: 'latest','sourceType':'module'
+    ecmaVersion: 'latest',
+    sourceType: 'module',
   },
   rules: {
     indent: ['error', 2],
@@ -21,10 +22,10 @@ module.exports = {
     'object-curly-spacing': ['error', 'always'],
     'arrow-spacing': ['error', { before: true, after: true }],
     'no-console': 0,
-    'react/react-in-jsx-scope':'off',
-    'react/prop-types': 'off'
+    'react/react-in-jsx-scope': 'off',
+    'react/prop-types': 'off',
   },
-  settings:{
-    'react': { 'version':'detect' }
-  }
+  settings: {
+    react: { version: 'detect' },
+  },
 }

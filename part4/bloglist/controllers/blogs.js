@@ -41,9 +41,17 @@ blogsRouter.post('/', middleware.tokenExtractor, middleware.userExtractor, async
   }
 })
 
-blogsRouter.put('/:id', async (request, response) => {
+blogsRouter.put('/:id', middleware.tokenExtractor, middleware.userExtractor, async (request, response) => {
   const body = request.body
-  let updatedBlog = await Blog.findByIdAndUpdate(request.params.id, { likes: body.likes }, { new: true })
+
+  const blog = {
+    author: body.author,
+    likes: body.likes,
+    title: body.title,
+    url: body.url,
+    user: body.user.id,
+  }
+  let updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
   response.status(200).json(updatedBlog)
 })
 

@@ -6,6 +6,7 @@ import loginService from './services/login'
 import Togglable from './components/togglable'
 import BlogForm from './components/blogForm'
 import React from 'react'
+import { useRef } from 'react'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -61,6 +62,7 @@ const App = () => {
   }
 
   const addBlog = (blogObject) => {
+    blogFormRef.current.toggleVisibility()
     blogService.create(blogObject).then((savedBlog) => {
       setBlogs(blogs.concat(savedBlog))
       setTimedMessage(setMessage, `A new blog ${savedBlog.title} by ${savedBlog.author} added`)
@@ -113,13 +115,15 @@ const App = () => {
     )
   }
 
+  const blogFormRef = useRef()
+
   const blogForm = () => {
     return (
       <div>
         <p>
           {user.name} logged in <button onClick={handleLogout}>logout</button>
         </p>
-        <Togglable buttonLabel="New Blog">
+        <Togglable buttonLabel="New Blog" ref={blogFormRef}>
           <BlogForm createBlog={addBlog}></BlogForm>
         </Togglable>
       </div>

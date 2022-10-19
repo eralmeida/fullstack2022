@@ -35,20 +35,6 @@ const App = () => {
       .then((blogs) => setBlogs(blogs))
   }
 
-  const loginForm = () => {
-    return (
-      <Togglable viewLabel="login" hideLabel="Cancel">
-        <LoginForm
-          username={username}
-          password={password}
-          handleUsernameChange={({ target }) => setUsername(target.value)}
-          handlePasswordChange={({ target }) => setPassword(target.value)}
-          handleSubmit={handleLogin}
-        ></LoginForm>
-      </Togglable>
-    )
-  }
-
   const handleLogin = async (event) => {
     event.preventDefault()
 
@@ -71,7 +57,7 @@ const App = () => {
   }
 
   const showBlogRemovalButtonHandler = (blogObject) => {
-    return blogObject.user.username === user.username
+    return user !== null && blogObject.user.username === user.username
   }
 
   const addBlog = (blogObject) => {
@@ -99,25 +85,6 @@ const App = () => {
     }, 5000)
   }
 
-  const blogList = () => (
-    <div>
-      <h2>blogs</h2>
-      <Notification message={message}></Notification>
-      <ErrorMessage message={errorMessage}></ErrorMessage>
-      <p>
-        {user.name} logged in <button onClick={handleLogout}>logout</button>
-      </p>
-
-      <Togglable viewLabel="New Blog" hideLabel="Cancel">
-        <BlogForm createBlog={addBlog}></BlogForm>
-      </Togglable>
-
-      {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} incrementLike={likeHandler} showRemovalButton={showBlogRemovalButtonHandler(blog)} removeBlog={removeHandler} />
-      ))}
-    </div>
-  )
-
   const Notification = ({ message }) => {
     if (message === null) {
       return null
@@ -132,7 +99,46 @@ const App = () => {
     return <div className="errorMessage">{message}</div>
   }
 
-  return <div>{user === null ? loginForm() : blogList()}</div>
+  const loginForm = () => {
+    return (
+      <Togglable buttonLabel="login">
+        <LoginForm
+          username={username}
+          password={password}
+          handleUsernameChange={({ target }) => setUsername(target.value)}
+          handlePasswordChange={({ target }) => setPassword(target.value)}
+          handleSubmit={handleLogin}
+        ></LoginForm>
+      </Togglable>
+    )
+  }
+
+  const blogForm = () => {
+    return (
+      <div>
+        <p>
+          {user.name} logged in <button onClick={handleLogout}>logout</button>
+        </p>
+        <Togglable buttonLabel="New Blog">
+          <BlogForm createBlog={addBlog}></BlogForm>
+        </Togglable>
+      </div>
+    )
+  }
+
+  return (
+    <div>
+      <h2>blogs</h2>
+      <Notification message={message}></Notification>
+      <ErrorMessage message={errorMessage}></ErrorMessage>
+
+      {user === null ? loginForm() : blogForm()}
+
+      {blogs.map((blog) => (
+        <Blog key={blog.id} blog={blog} incrementLike={likeHandler} showRemovalButton={showBlogRemovalButtonHandler(blog)} removeBlog={removeHandler} />
+      ))}
+    </div>
+  )
 }
 
 export default App

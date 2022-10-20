@@ -101,6 +101,17 @@ const App = () => {
     return <div className="errorMessage">{message}</div>
   }
 
+  const LoggedUser = () => {
+    if (user === null) {
+      return null
+    }
+    return (
+      <p>
+        {user.name} logged in <button onClick={handleLogout}>logout</button>
+      </p>
+    )
+  }
+
   const loginForm = () => {
     return (
       <Togglable buttonLabel="login">
@@ -120,9 +131,6 @@ const App = () => {
   const blogForm = () => {
     return (
       <div>
-        <p>
-          {user.name} logged in <button onClick={handleLogout}>logout</button>
-        </p>
         <Togglable buttonLabel="New Blog" ref={blogFormRef}>
           <BlogForm createBlog={addBlog}></BlogForm>
         </Togglable>
@@ -135,6 +143,7 @@ const App = () => {
       <h2>blogs</h2>
       <Notification message={message}></Notification>
       <ErrorMessage message={errorMessage}></ErrorMessage>
+      <LoggedUser></LoggedUser>
 
       {user === null ? loginForm() : blogForm()}
 

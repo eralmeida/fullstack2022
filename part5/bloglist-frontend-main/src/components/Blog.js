@@ -15,27 +15,27 @@ const Blog = ({ blog, incrementLike, removeBlog, showRemovalButton }) => {
     borderWidth: 1,
     marginBottom: 5,
     display: 'flex',
-    'flex-direction': 'column',
+    flexDirection: 'column',
   }
 
   return (
     <div style={blogStyle}>
       <div>
         {blog.title} {blog.author}
-        <button style={{ marginLeft: 10 }} onClick={showDetails}>
+        <button className="button" style={{ marginLeft: 10 }} onClick={showDetails}>
           {visibleDetails ? 'hide' : 'show'}
         </button>
       </div>
       {visibleDetails && (
         <div>
-          <div>{blog.url}</div>
-          <div>
-            likes {blog.likes}
-            <button style={{ marginLeft: 5 }} onClick={() => incrementLike(blog)}>
+          <div className="url">{blog.url}</div>
+          <div style={{ display: 'flex', alignItems: 'baseline' }}>
+            <div className="likes">likes {blog.likes}</div>
+            <button style={{ marginLeft: 10 }} onClick={() => incrementLike(blog)}>
               like
             </button>
           </div>
-          <div>{blog.author}</div>
+          <div className="author">{blog.author}</div>
           {showRemovalButton && (
             <div>
               <button onClick={() => removeBlog(blog)}>Remove</button>

@@ -62,7 +62,7 @@ const App = () => {
   }
 
   const addBlog = (blogObject) => {
-    blogFormRef.current.toggleVisibility()
+    blogFormRef.current()
     blogService.create(blogObject).then((savedBlog) => {
       setBlogs(blogs.concat(savedBlog))
       setTimedMessage(setMessage, `A new blog ${savedBlog.title} by ${savedBlog.author} added`)

@@ -19,7 +19,7 @@ const Blog = ({ blog, incrementLike, removeBlog, showRemovalButton }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className="blog">
       <div>
         {blog.title} {blog.author}
         <button className="button" style={{ marginLeft: 10 }} onClick={showDetails}>
@@ -31,7 +31,7 @@ const Blog = ({ blog, incrementLike, removeBlog, showRemovalButton }) => {
           <div className="url">{blog.url}</div>
           <div style={{ display: 'flex', alignItems: 'baseline' }}>
             <div className="likes">likes {blog.likes}</div>
-            <button style={{ marginLeft: 10 }} onClick={() => incrementLike(blog)}>
+            <button id="likeButton" style={{ marginLeft: 10 }} onClick={() => incrementLike(blog)}>
               like
             </button>
           </div>

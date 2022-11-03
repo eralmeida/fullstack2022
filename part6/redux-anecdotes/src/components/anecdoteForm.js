@@ -1,14 +1,18 @@
+import React from 'react'
 import { useDispatch } from 'react-redux'
-import { createAnecdote } from '../reducers/anecdoteReducer'
 
-const AnecdoteForm = (props) => {
+const AnecdoteForm = () => {
   const dispatch = useDispatch()
 
   const addAnecdote = (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
-    dispatch(createAnecdote(content))
+    dispatch({ type: 'anecdotes/create', payload: content })
+    dispatch({ type: 'notifications/add', payload: `You added '${content}'` })
+    setTimeout(() => {
+      dispatch({ type: 'notifications/remove' })
+    }, 5000)
   }
 
   return (

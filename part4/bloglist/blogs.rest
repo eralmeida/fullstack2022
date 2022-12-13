@@ -21,3 +21,14 @@ PUT http://localhost:3001/api/blogs/6311ef28ba660a3fc02bc8f6 HTTP/1.1
 Content-Type: application/json
 
 {"title": "Whatever","author": "Eduardo", "url":"http://updatedCoiso.com","likes":4}
+
+###
+POST http://localhost:3003/api/blogs/639af986288db3b130eeea2e/comments HTTP/1.1
+Content-Type: application/json
+
+{"comment": "My first comment"}
+
+###
+
+GET http://localhost:3003/api/blogs/ HTTP/1.1
+Content-Type: application/json

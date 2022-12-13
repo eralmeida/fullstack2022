@@ -1,7 +1,9 @@
 import '@testing-library/jest-dom/extend-expect'
+
 import { render, screen } from '@testing-library/react'
-import Blog from '../components/Blog'
 import userEvent from '@testing-library/user-event'
+
+import Blog from '../components/Blog'
 import BlogForm from '../components/blogForm'
 
 test('blog: Upon rendering, it has title and author, but no url nor likes', () => {

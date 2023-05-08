@@ -1,5 +1,6 @@
 const { ApolloServer } = require('@apollo/server')
 const { startStandaloneServer } = require('@apollo/server/standalone')
+const { GraphQLError } = require('graphql')
 const { v1: uuid } = require('uuid')
 
 let authors = [
@@ -128,6 +129,10 @@ const resolvers = {
   },
   Mutation: {
     addBook: (root, args) => {
+      if (!args.author) throw new GraphQLError('Author must have a name', { extensions: { code: 'BAD_USER_INPUT', invalidArgs: args.name } })
+      if (!args.title) throw new GraphQLError('Book must have a title', { extensions: { code: 'BAD_USER_INPUT', invalidArgs: args.title } })
+      if (args.published === 0) throw new GraphQLError('Book must have a published year', { extensions: { code: 'BAD_USER_INPUT', invalidArgs: args.published } })
+
       if (!authors.find((author) => author.name === args.author)) {
         const newAuthor = { name: args.author, id: uuid() }
         authors = authors.concat(newAuthor)

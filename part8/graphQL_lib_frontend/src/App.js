@@ -1,12 +1,23 @@
-import Authors from './components/Authors'
-import NewBook from './components/NewBook'
-import { Link, Routes, Route } from 'react-router-dom'
-import Books from './components/Books'
+import { useApolloClient } from '@apollo/client'
 import { useState } from 'react'
+import { Link, Route, Routes } from 'react-router-dom'
+
+import Authors from './components/Authors'
+import Books from './components/Books'
+import LoginForm from './components/LoginForm'
+import NewBook from './components/NewBook'
 
 const App = () => {
   const linkPadding = { padding: 5 }
   const [errorMessage, setErrorMessage] = useState(null)
+  const [token, setToken] = useState(null)
+  const client = useApolloClient()
+
+  const logout = () => {
+    setToken(null)
+    localStorage.clear()
+    client.resetStore()
+  }
 
   const notify = (message) => {
     setErrorMessage(message)
@@ -22,6 +33,15 @@ const App = () => {
     return <div style={{ color: 'red' }}>{errorMessage}</div>
   }
 
+  if (!token) {
+    return (
+      <>
+        <Notify errorMessage={errorMessage} />
+        <LoginForm setToken={setToken} setError={notify} />
+      </>
+    )
+  }
+
   return (
     <div>
       <div>
@@ -31,15 +51,25 @@ const App = () => {
         <Link style={linkPadding} to="/books">
           books
         </Link>
-        <Link style={linkPadding} to="/add">
-          add
-        </Link>
+        {token === null ? (
+          <Link style={linkPadding} to="/login">
+            login
+          </Link>
+        ) : (
+          <>
+            <Link style={linkPadding} to="/add">
+              add
+            </Link>
+            <button onClick={logout}>Logout</button>
+          </>
+        )}
       </div>
       <Notify errorMessage={errorMessage} />
       <Routes>
         <Route path="/" element={<Authors setError={notify} />} />
         <Route path="/books" element={<Books />} />
         <Route path="/add" element={<NewBook setError={notify} />} />
+        <Route path="/login" element={<LoginForm setToken={setToken} setError={notify}></LoginForm>} />
       </Routes>
     </div>
   )

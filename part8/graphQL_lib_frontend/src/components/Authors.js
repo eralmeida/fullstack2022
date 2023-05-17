@@ -1,7 +1,8 @@
-import { useQuery, useMutation } from '@apollo/client'
-import { ALL_AUTHORS, EDIT_AUTHOR } from '../queries'
-import Select from 'react-select'
+import { useMutation, useQuery } from '@apollo/client'
 import { useState } from 'react'
+import Select from 'react-select'
+
+import { ALL_AUTHORS, EDIT_AUTHOR } from '../queries'
 
 const Authors = ({ setError }) => {
   const authorsResult = useQuery(ALL_AUTHORS)
@@ -18,8 +19,12 @@ const Authors = ({ setError }) => {
 
   const submitBornYear = async (event) => {
     event.preventDefault()
-    editAuthor({ variables: { author: selectedOption.value, setBornTo: Number(born) } })
-    setBorn('')
+    if (!selectedOption) {
+      setError('Please choose an author')
+    } else {
+      editAuthor({ variables: { author: selectedOption.value, setBornTo: Number(born) } })
+      setBorn('')
+    }
   }
 
   if (authorsResult.loading) {
@@ -50,7 +55,7 @@ const Authors = ({ setError }) => {
 
       <h2>Set birthyear</h2>
       <form onSubmit={submitBornYear}>
-        <Select defaultValue={selectList[0]} onChange={setSelectedOption} options={selectList}></Select>
+        <Select placeholder="Pick an author" onChange={setSelectedOption} options={selectList}></Select>
         <div>
           born
           <input type="number" value={born} onChange={({ target }) => setBorn(target.value)} />
